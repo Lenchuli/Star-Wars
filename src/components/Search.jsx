@@ -9,6 +9,7 @@ import {
   searchPlanets,
   getAllFilms,
 } from "../services/search";
+import styles from "./Search.module.scss";
 
 export function Search() {
   const dispatch = useDispatch();
@@ -56,9 +57,10 @@ export function Search() {
   }
 
   return (
-    <>
-      <header className="App-header">Search films</header>
-      <div>
+    <div className={styles.container}>
+      <header className={styles.header}>Star Wars archives</header>
+      <div className={styles.description}>Search films by: title, character or planet</div>
+      <div className={styles.searcher}>
         <input
           type="text"
           value={query}
@@ -73,6 +75,6 @@ export function Search() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

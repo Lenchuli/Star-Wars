@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Search } from "./components/Search";
 import { Detail } from "./components/Detail";
-import "./App.css";
+import styles from "./App.module.scss";
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.main}>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="search" element={<Search />} />
