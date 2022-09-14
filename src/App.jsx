@@ -1,6 +1,11 @@
 import { useState } from "react";
 import flatten from "lodash/flatten";
-import { searchFilms, searchPeople, searchPlanets } from "./services/search";
+import {
+  searchFilms,
+  searchPeople,
+  searchPlanets,
+  getAllFilms,
+} from "./services/search";
 import "./App.css";
 
 function App() {
@@ -13,29 +18,38 @@ function App() {
       searchPeople(query),
       searchPlanets(query),
     ]);
-    const moviesByPeopleIds = flatten(
-      people.map(({ films }) => {
-        return films.map((item) => {
-          const aux = item.split("/");
-          return aux[aux.length - 2];
-        });
-      })
-    );
-    const moviesByPlanetsIds = flatten(
-      planets.forEach(({ films }) =>
-        films.map((item) => {
-          const aux = item.split("/");
-          return aux[aux.length - 2];
-        })
-      )
-    );
-    const moviesIds = movies.map(({ url }) => {
-      const aux = url.split("/");
-      return aux[aux.length - 2];
+    const moviesIds = [];
+    const peopleIds = [];
+    const planetsIds = [];
+    movies.forEach(({ movieId }) => {
+      moviesIds.push(movieId);
     });
-    console.log(moviesByPeopleIds);
-    console.log(moviesByPlanetsIds);
-    console.log(moviesIds);
+    people.forEach(({ movieIds }) => {
+      peopleIds.push(movieIds);
+    });
+    planets.forEach(({ movieIds }) => {
+      planetsIds.push(movieIds);
+    });
+    const totalIds = [
+      ...moviesIds,
+      ...flatten(peopleIds),
+      ...flatten(planetsIds),
+    ];
+    const uniqueIds = [];
+    totalIds.forEach((id) => {
+      if (!uniqueIds.includes(id)) {
+        uniqueIds.push(id);
+      }
+    });
+    if (uniqueIds.length > moviesIds.length) {
+      let allMovies = await getAllFilms();
+      const myMovies = allMovies.filter(({ movieId }) =>
+        uniqueIds.includes(movieId)
+      );
+      setFims(myMovies);
+    } else {
+      setFims(movies);
+    }
   }
 
   return (
@@ -50,8 +64,8 @@ function App() {
         <button onClick={search}>GO</button>
       </div>
       <div>
-        {films.map(({ title }) => (
-          <div>{title}</div>
+        {films.map(({ title, movieId }) => (
+          <div key={movieId}>{title}</div>
         ))}
       </div>
     </div>
