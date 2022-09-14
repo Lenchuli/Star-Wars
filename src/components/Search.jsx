@@ -6,6 +6,7 @@ import {
   fetchResults,
   setIsError,
 } from "../redux/search-results";
+import { useSearchParams } from "react-router-dom";
 import flatten from "lodash/flatten";
 import { getAllFilms } from "../services/search";
 import { Placard } from "./Placard";
@@ -15,7 +16,8 @@ export function Search() {
   const dispatch = useDispatch();
   const { films, planets, people, matchingFilms, isError, isLoading } =
     useSelector((state) => state.search);
-  const [query, seQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, seQuery] = useState(searchParams.get("query") || "");
 
   useEffect(() => {
     (async () => {
@@ -66,6 +68,16 @@ export function Search() {
     }
   }
 
+  function handleChange(str) {
+    seQuery(str);
+    if (str) {
+      setSearchParams({ query: str });
+    } else {
+      searchParams.delete("query");
+      setSearchParams(searchParams);
+    }
+  }
+
   return (
     <div className={styles.container}>
       {isError ? (
@@ -80,7 +92,7 @@ export function Search() {
             <input
               type="text"
               value={query}
-              onChange={(event) => seQuery(event.target.value)}
+              onChange={(event) => handleChange(event.target.value)}
             />
             <button onClick={search}>GO</button>
           </div>
