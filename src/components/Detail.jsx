@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFilmById } from "../services/search";
+import styles from "./Detail.module.scss";
 
 export function Detail() {
   const navigate = useNavigate();
@@ -17,9 +18,21 @@ export function Detail() {
   }, [id]);
 
   return (
-    <div>
-      <button onClick={() => navigate("/search")}>Back to results</button>
-      <div>{film.title}</div>
+    <div className={styles.container}>
+      <button className={styles.back} onClick={() => navigate("/search")}>
+        Back to results
+      </button>
+      <header className={styles.header}>
+        {film.title}{" "}
+        <span className={styles.subheader}>Episode {film.episode_id}</span>
+      </header>
+      <div className={styles.card}>
+      <div className={styles.staff}>
+        <span className={styles.director}>Director: {film.director}</span>
+        <span className={styles.producer}>Producer: {film.producer}</span>
+        </div>
+        <div className={styles.date}>{film.release_date}</div>
+      </div>
     </div>
   );
 }
