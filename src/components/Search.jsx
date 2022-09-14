@@ -68,10 +68,8 @@ export function Search() {
       </div>
       <div>
         {films.map(({ title, movieId }) => (
-          <div>
-            <Link key={movieId} to={`/detail/${movieId}`}>
-              {title}
-            </Link>
+          <div key={movieId}>
+            <Link to={`/detail/${movieId}`}>{title}</Link>
           </div>
         ))}
       </div>
