@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilms } from "../redux/search-results";
-import { Link } from "react-router-dom";
 import flatten from "lodash/flatten";
 import {
   searchFilms,
@@ -9,6 +8,7 @@ import {
   searchPlanets,
   getAllFilms,
 } from "../services/search";
+import { Placard } from "./Placard";
 import styles from "./Search.module.scss";
 
 export function Search() {
@@ -59,7 +59,9 @@ export function Search() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>Star Wars archives</header>
-      <div className={styles.description}>Search films by: title, character or planet</div>
+      <div className={styles.description}>
+        Search films by: title, character or planet
+      </div>
       <div className={styles.searcher}>
         <input
           type="text"
@@ -68,11 +70,9 @@ export function Search() {
         />
         <button onClick={search}>GO</button>
       </div>
-      <div>
+      <div className={styles.results}>
         {films.map(({ title, movieId }) => (
-          <div key={movieId}>
-            <Link to={`/detail/${movieId}`}>{title}</Link>
-          </div>
+          <Placard key={movieId} title={title} movieId={movieId} />
         ))}
       </div>
     </div>
