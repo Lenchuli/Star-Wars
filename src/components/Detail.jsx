@@ -7,32 +7,41 @@ export function Detail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [film, setFilm] = useState({});
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
         const response = await getFilmById(id);
         setFilm(response);
-      } catch (e) {}
+      } catch (e) {
+        setIsError(true);
+      }
     })();
   }, [id]);
 
   return (
     <div className={styles.container}>
-      <button className={styles.back} onClick={() => navigate("/search")}>
-        Back to results
-      </button>
-      <header className={styles.header}>
-        {film.title}{" "}
-        <span className={styles.subheader}>Episode {film.episode_id}</span>
-      </header>
-      <div className={styles.card}>
-      <div className={styles.staff}>
-        <span className={styles.director}>Director: {film.director}</span>
-        <span className={styles.producer}>Producer: {film.producer}</span>
-        </div>
-        <div className={styles.date}>{film.release_date}</div>
-      </div>
+      {isError ? (
+        <header className={styles.header}>Ooops! An error occurred</header>
+      ) : (
+        <>
+          <button className={styles.back} onClick={() => navigate("/search")}>
+            Back to results
+          </button>
+          <header className={styles.header}>
+            {film.title}{" "}
+            <span className={styles.subheader}>Episode {film.episode_id}</span>
+          </header>
+          <div className={styles.card}>
+            <div className={styles.staff}>
+              <span className={styles.director}>Director: {film.director}</span>
+              <span className={styles.producer}>Producer: {film.producer}</span>
+            </div>
+            <div className={styles.date}>{film.release_date}</div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

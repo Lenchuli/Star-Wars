@@ -44,13 +44,8 @@ export async function getAllFilms() {
 }
 
 export async function getFilmById(id) {
-  try {
-    const response = await axios.get(`films/${id}`);
-    return response.data;
-  } catch (e) {
-    console.log("Error fetching film:", e);
-    return [];
-  }
+  const response = await axios.get(`films/${id}`);
+  return response.data;
 }
 
 function addMovieIds(arr, type) {
