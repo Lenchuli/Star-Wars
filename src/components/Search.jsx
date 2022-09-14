@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilms } from "../redux/search-results";
 import { Link } from "react-router-dom";
 import flatten from "lodash/flatten";
 import {
@@ -9,8 +11,9 @@ import {
 } from "../services/search";
 
 export function Search() {
+  const dispatch = useDispatch();
+  const films = useSelector((state) => state.search.films);
   const [query, seQuery] = useState("");
-  const [films, setFims] = useState([]);
 
   async function search() {
     const [movies, people, planets] = await Promise.all([
@@ -46,9 +49,9 @@ export function Search() {
       const myMovies = allMovies.filter(({ movieId }) =>
         uniqueIds.includes(movieId)
       );
-      setFims(myMovies);
+      dispatch(setFilms(myMovies));
     } else {
-      setFims(movies);
+      dispatch(setFilms(movies));
     }
   }
 
