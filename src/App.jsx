@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { searchFilms } from "./services/search";
+import flatten from "lodash/flatten";
+import { searchFilms, searchPeople, searchPlanets } from "./services/search";
 import "./App.css";
 
 function App() {
@@ -7,8 +8,34 @@ function App() {
   const [films, setFims] = useState([]);
 
   async function search() {
-    const results = await searchFilms(query);
-    setFims(results);
+    const [movies, people, planets] = await Promise.all([
+      searchFilms(query),
+      searchPeople(query),
+      searchPlanets(query),
+    ]);
+    const moviesByPeopleIds = flatten(
+      people.map(({ films }) => {
+        return films.map((item) => {
+          const aux = item.split("/");
+          return aux[aux.length - 2];
+        });
+      })
+    );
+    const moviesByPlanetsIds = flatten(
+      planets.forEach(({ films }) =>
+        films.map((item) => {
+          const aux = item.split("/");
+          return aux[aux.length - 2];
+        })
+      )
+    );
+    const moviesIds = movies.map(({ url }) => {
+      const aux = url.split("/");
+      return aux[aux.length - 2];
+    });
+    console.log(moviesByPeopleIds);
+    console.log(moviesByPlanetsIds);
+    console.log(moviesIds);
   }
 
   return (
