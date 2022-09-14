@@ -71,8 +71,14 @@ export function Search() {
         <button onClick={search}>GO</button>
       </div>
       <div className={styles.results}>
-        {films.map(({ title, movieId }) => (
-          <Placard key={movieId} title={title} movieId={movieId} />
+        {films.map(({ title, movieId, episode_id, release_date }) => (
+          <Placard
+            key={movieId}
+            movieId={movieId}
+            title={title}
+            episode={episode_id}
+            releaseDate={release_date}
+          />
         ))}
       </div>
     </div>
