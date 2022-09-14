@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import flatten from "lodash/flatten";
 import {
   searchFilms,
@@ -52,7 +53,7 @@ export function Search() {
   }
 
   return (
-    <div className="App">
+    <>
       <header className="App-header">Search films</header>
       <div>
         <input
@@ -64,9 +65,13 @@ export function Search() {
       </div>
       <div>
         {films.map(({ title, movieId }) => (
-          <div key={movieId}>{title}</div>
+          <div>
+            <Link key={movieId} to={`/detail/${movieId}`}>
+              {title}
+            </Link>
+          </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
