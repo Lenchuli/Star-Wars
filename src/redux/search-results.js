@@ -18,6 +18,7 @@ const searchSlice = createSlice({
   name: REDUCER_NAME,
   initialState: {
     isError: false,
+    isLoading: false,
     films: [],
     planets: [],
     people: [],
@@ -39,12 +40,17 @@ const searchSlice = createSlice({
     [fetchResults.fulfilled]: (state, action) => {
       const [films, people, planets] = action.payload;
       state.false = false;
+      state.isLoading = false;
       state.films = films;
       state.people = people;
       state.planets = planets;
     },
     [fetchResults.rejected]: (state) => {
       state.isError = true;
+      state.isLoading = false;
+    },
+    [fetchResults.pending]: (state) => {
+      state.isLoading = true;
     },
   },
 });

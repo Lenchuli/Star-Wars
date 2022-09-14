@@ -13,9 +13,8 @@ import styles from "./Search.module.scss";
 
 export function Search() {
   const dispatch = useDispatch();
-  const { films, planets, people, matchingFilms, isError } = useSelector(
-    (state) => state.search
-  );
+  const { films, planets, people, matchingFilms, isError, isLoading } =
+    useSelector((state) => state.search);
   const [query, seQuery] = useState("");
 
   useEffect(() => {
@@ -85,19 +84,23 @@ export function Search() {
             />
             <button onClick={search}>GO</button>
           </div>
-          <div className={styles.results}>
-            {matchingFilms.map(
-              ({ title, movieId, episode_id, release_date }) => (
-                <Placard
-                  key={movieId}
-                  movieId={movieId}
-                  title={title}
-                  episode={episode_id}
-                  releaseDate={release_date}
-                />
-              )
-            )}
-          </div>
+          {isLoading ? (
+            <div className={styles.description}>Loading...</div>
+          ) : (
+            <div className={styles.results}>
+              {matchingFilms.map(
+                ({ title, movieId, episode_id, release_date }) => (
+                  <Placard
+                    key={movieId}
+                    movieId={movieId}
+                    title={title}
+                    episode={episode_id}
+                    releaseDate={release_date}
+                  />
+                )
+              )}
+            </div>
+          )}
         </>
       )}
     </div>
