@@ -5,7 +5,6 @@ export function Placard({ movieId, title, episode, releaseDate }) {
   function getYearsAgo(str) {
     const date = new Date(str);
     const now = new Date();
-    console.log(now.getYear() - date.getYear());
     return now.getYear() - date.getYear();
   }
 

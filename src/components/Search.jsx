@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilms } from "../redux/search-results";
+import { setFilms, resetFilms } from "../redux/search-results";
 import flatten from "lodash/flatten";
 import {
   searchFilms,
@@ -17,42 +17,46 @@ export function Search() {
   const [query, seQuery] = useState("");
 
   async function search() {
-    const [movies, people, planets] = await Promise.all([
-      searchFilms(query),
-      searchPeople(query),
-      searchPlanets(query),
-    ]);
-    const moviesIds = [];
-    const peopleIds = [];
-    const planetsIds = [];
-    movies.forEach(({ movieId }) => {
-      moviesIds.push(movieId);
-    });
-    people.forEach(({ movieIds }) => {
-      peopleIds.push(movieIds);
-    });
-    planets.forEach(({ movieIds }) => {
-      planetsIds.push(movieIds);
-    });
-    const totalIds = [
-      ...moviesIds,
-      ...flatten(peopleIds),
-      ...flatten(planetsIds),
-    ];
-    const uniqueIds = [];
-    totalIds.forEach((id) => {
-      if (!uniqueIds.includes(id)) {
-        uniqueIds.push(id);
-      }
-    });
-    if (uniqueIds.length > moviesIds.length) {
-      let allMovies = await getAllFilms();
-      const myMovies = allMovies.filter(({ movieId }) =>
-        uniqueIds.includes(movieId)
-      );
-      dispatch(setFilms(myMovies));
+    if (!query) {
+      dispatch(resetFilms());
     } else {
-      dispatch(setFilms(movies));
+      const [movies, people, planets] = await Promise.all([
+        searchFilms(query),
+        searchPeople(query),
+        searchPlanets(query),
+      ]);
+      const moviesIds = [];
+      const peopleIds = [];
+      const planetsIds = [];
+      movies.forEach(({ movieId }) => {
+        moviesIds.push(movieId);
+      });
+      people.forEach(({ movieIds }) => {
+        peopleIds.push(movieIds);
+      });
+      planets.forEach(({ movieIds }) => {
+        planetsIds.push(movieIds);
+      });
+      const totalIds = [
+        ...moviesIds,
+        ...flatten(peopleIds),
+        ...flatten(planetsIds),
+      ];
+      const uniqueIds = [];
+      totalIds.forEach((id) => {
+        if (!uniqueIds.includes(id)) {
+          uniqueIds.push(id);
+        }
+      });
+      if (uniqueIds.length > moviesIds.length) {
+        let allMovies = await getAllFilms();
+        const myMovies = allMovies.filter(({ movieId }) =>
+          uniqueIds.includes(movieId)
+        );
+        dispatch(setFilms(myMovies));
+      } else {
+        dispatch(setFilms(movies));
+      }
     }
   }
 

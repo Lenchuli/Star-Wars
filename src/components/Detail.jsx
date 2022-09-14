@@ -18,7 +18,7 @@ export function Detail() {
 
   return (
     <div>
-      <button onClick={()=>navigate("/search")}>Back to results</button>
+      <button onClick={() => navigate("/search")}>Back to results</button>
       <div>{film.title}</div>
     </div>
   );

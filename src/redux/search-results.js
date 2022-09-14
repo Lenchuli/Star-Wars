@@ -10,8 +10,11 @@ const searchSlice = createSlice({
     setFilms: (state, action) => {
       state.films = action.payload;
     },
+    resetFilms: (state) => {
+      state.films = [];
+    },
   },
 });
 
-export const { setFilms } = searchSlice.actions;
+export const { setFilms, resetFilms } = searchSlice.actions;
 export default searchSlice.reducer;
