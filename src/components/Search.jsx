@@ -5,6 +5,7 @@ import {
   resetFilms,
   fetchResults,
   setIsError,
+  setQuery,
 } from "../redux/search-results";
 import { useSearchParams } from "react-router-dom";
 import flatten from "lodash/flatten";
@@ -61,6 +62,7 @@ export function Search() {
   }, [films, planets, people]);
 
   async function search() {
+    dispatch(setQuery(query));
     if (!query) {
       dispatch(resetFilms());
     } else {

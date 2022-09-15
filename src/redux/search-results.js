@@ -23,6 +23,7 @@ const searchSlice = createSlice({
     planets: [],
     people: [],
     matchingFilms: [],
+    query: "",
   },
   reducers: {
     setFilms: (state, action) => {
@@ -34,6 +35,9 @@ const searchSlice = createSlice({
     },
     setIsError: (state) => {
       state.isError = true;
+    },
+    setQuery: (state, action) => {
+      state.query = action.payload;
     },
   },
   extraReducers: {
@@ -55,5 +59,6 @@ const searchSlice = createSlice({
   },
 });
 
-export const { setFilms, resetFilms, setIsError } = searchSlice.actions;
+export const { setFilms, resetFilms, setIsError, setQuery } =
+  searchSlice.actions;
 export default searchSlice.reducer;
