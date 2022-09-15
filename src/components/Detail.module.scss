@@ -26,7 +26,8 @@
     border: solid 2px grey;
 }
 
-.director {
+.director,
+.infoTitle {
     text-align: left;
 } 
 
@@ -45,6 +46,19 @@
 
 .director,
 .producer,
-.date {
+.date,
+.info {
     margin: 8px;
+}
+
+.info {
+    text-align: justify;
+
+    > span {
+        margin: 3px;
+    }
+}
+
+.info span:first-of-type {
+    margin-left: 0;
 }

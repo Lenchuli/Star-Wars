@@ -65,16 +65,16 @@ export function Detail() {
                   </span>
                 </div>
                 <div className={styles.date}>{film.release_date}</div>
-                <div>
-                  <div>Characters:</div>
-                  {characters.map(({ name }) => (
-                    <span>{name}</span>
+                <div className={styles.info}>
+                  <div className={styles.infoTitle}>Characters:</div>
+                  {characters.map(({ name }, index) => (
+                    <span key={index}>{name}</span>
                   ))}
                 </div>
-                <div>
-                  <div>Planets:</div>
-                  {planets.map(({ name }) => (
-                    <span>{name}</span>
+                <div className={styles.info}>
+                  <div className={styles.infoTitle}>Planets:</div>
+                  {planets.map(({ name }, index) => (
+                    <span key={index}>{name}</span>
                   ))}
                 </div>
               </div>

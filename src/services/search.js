@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const axios = Axios.create({ timeout: 5000 });
+const axios = Axios.create({ timeout: 7000 });
 axios.defaults.baseURL = "https://swapi.dev/api/";
 
 export async function searchFilms(param) {
