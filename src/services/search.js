@@ -25,7 +25,7 @@ export async function getAllFilms() {
 
 export async function getFilmById(id) {
   const response = await axios.get(`films/${id}`);
-  return response.data;
+  return { ...response.data, id };
 }
 
 function addMovieIds(arr, type) {

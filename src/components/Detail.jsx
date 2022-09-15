@@ -1,20 +1,34 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getFilmById } from "../services/search";
+import { getFilmById, searchPeople, searchPlanets } from "../services/search";
 import styles from "./Detail.module.scss";
 
 export function Detail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [film, setFilm] = useState({});
+  const [characters, setCharacters] = useState([]);
+  const [planets, setPlanets] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await getFilmById(id);
-        setFilm(response);
+        const [myFilm, people, planets] = await Promise.all([
+          getFilmById(id),
+          searchPeople(),
+          searchPlanets(),
+        ]);
+        setFilm(myFilm);
+        const filteredPeople = people.filter(({ movieIds }) =>
+          movieIds.find((id) => id === myFilm.id)
+        );
+        const filteredPlanets = planets.filter(({ movieIds }) =>
+          movieIds.find((id) => id === myFilm.id)
+        );
+        setCharacters(filteredPeople);
+        setPlanets(filteredPlanets);
         setIsLoading(false);
       } catch (e) {
         setIsError(true);
@@ -51,6 +65,18 @@ export function Detail() {
                   </span>
                 </div>
                 <div className={styles.date}>{film.release_date}</div>
+                <div>
+                  <div>Characters:</div>
+                  {characters.map(({ name }) => (
+                    <span>{name}</span>
+                  ))}
+                </div>
+                <div>
+                  <div>Planets:</div>
+                  {planets.map(({ name }) => (
+                    <span>{name}</span>
+                  ))}
+                </div>
               </div>
             </>
           )}
